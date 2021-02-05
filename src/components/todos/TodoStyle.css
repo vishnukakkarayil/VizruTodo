@@ -1,0 +1,9 @@
+.todo-items{
+    background: #fff;
+}
+.todo-items:hover{
+    background: #f5f5f5;
+}
+.selected-item {
+    text-decoration: line-through;
+}
