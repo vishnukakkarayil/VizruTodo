@@ -4,7 +4,7 @@ import TodoEditReducer from './TodoEditReducer'
 
 const RootReducer = combineReducers({
     todoReducer : TodoReducer,
-    todoEditReducer : TodoEditReducer
+    // todoEditReducer : TodoEditReducer
 })
 
 export default RootReducer
