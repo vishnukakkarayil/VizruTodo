@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { v4 as uuid } from 'uuid'
 export const TodoList = () =>
 (dispatch, getState) => {
     dispatch({ type: 'TODO_DATAS' })
@@ -30,12 +31,11 @@ export const todoComplete =(id)=>
 
 export const addItemToTodo = (getTodoItem) => 
 (dispatch,getState)=>{
-    // console.log(getTodoItem)
     const allTodoItems = getState().todoReducer.todoData
    let todoId = allTodoItems.length
     const addTodo = {
         "status": true,
-        "id": ++todoId,
+        "id": uuid(),
         "title": getTodoItem,
       }
       

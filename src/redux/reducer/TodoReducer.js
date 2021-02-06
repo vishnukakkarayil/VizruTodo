@@ -61,7 +61,6 @@ const TodoReducer = (state = initialState, action) => {
                 todoData:action.payload
             }
         case 'ADD_TO_TODO':
-          // console.log(action.payload)
           return{
             ...state,
             todoData:action.payload
