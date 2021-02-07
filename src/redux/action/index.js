@@ -1,48 +1,55 @@
-import axios from 'axios'
+// import axios from 'axios'
 import { v4 as uuid } from 'uuid'
 export const TodoList = () =>
-(dispatch, getState) => {
-    dispatch({ type: 'TODO_DATAS' })
-    axios.post('https://quality.vizru.com/workflow.trigger/6012a83e56e22e19105ea8fc')
-    .then(todos => console.log(todos))
-    .catch(err=>console.log(err))
+    (dispatch, getState) => {
+        const data = new FormData()
+        data.append('Type', 'Getlist')
+        dispatch({ type: 'TODO_DATAS' })
 
-    // fetch('https://quality.vizru.com/workflow.trigger/6012a83e56e22e19105ea8fc')
-    //             .then(res => res.json())
-    //             .then(data => console.log(data))
-                
-    
-    // console.log('dfdfdfd')
-}
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
 
-export const todoComplete =(id)=>
-(dispatch,getState) => {
-    const allTodoItems = getState().todoReducer.todoData
-    const updateData = allTodoItems.find(allTodoItem => allTodoItem.id === id)
-    if(updateData){
-        updateData.status = false
-        const currentIndex = allTodoItems.findIndex(allTodoItem => allTodoItem.id === id)
-        allTodoItems.splice(currentIndex,1,updateData)
-        dispatch({type:'COMPLETE_TODO',payload:allTodoItems})
-        // console.log(allTodoItems)
+        xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            const todoJson = JSON.parse(this.responseText)
+            dispatch({ type: 'TODO_DATAS',payload:todoJson[0].Body })
+        }
+        });
+        xhr.open("POST", "https://quality.vizru.com/workflow.trigger/6012a83e56e22e19105ea8fc");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.send(data);
     }
 
-}
+export const todoComplete = (completedItem) =>
 
-export const addItemToTodo = (getTodoItem) => 
-(dispatch,getState)=>{
-    const allTodoItems = getState().todoReducer.todoData
-   let todoId = allTodoItems.length
-    const addTodo = {
-        "status": true,
-        "id": uuid(),
-        "title": getTodoItem,
-      }
-      
-      allTodoItems.push(addTodo)
-      dispatch({type:'ADD_TO_TODO',payload:allTodoItems})
-      
-}
+    (dispatch, getState) => {
+        
+        const allTodoItems = getState().todoReducer.todoData
+        const updateData = allTodoItems.find(allTodoItem => allTodoItem.rowID === completedItem.rowID)
+        if (updateData) {
+            const currentIndex = allTodoItems.findIndex(allTodoItem => allTodoItem.rowID === completedItem.rowID)
+            allTodoItems.splice(currentIndex, 1, completedItem)
+            const updatedItems = [...allTodoItems]
+            
+            dispatch({ type: 'ADD_TO_TODO', payload: updatedItems })
+        }
+
+    }
+
+export const addItemToTodo = (getTodoItem) =>
+    (dispatch, getState) => {
+        const allTodoItems = getState().todoReducer.todoData
+        const addTodo = {
+            "Status": "Pending",
+            "rowID": uuid(),
+            "Title": getTodoItem,
+        }
+        allTodoItems.push(addTodo)
+
+        const updatedData = [...allTodoItems]
+        dispatch({ type: 'ADD_TO_TODO', payload: updatedData })
+
+    }
 
 // export const editItem = (id) => 
 // (dispatch,getState)=>{
@@ -54,9 +61,9 @@ export const addItemToTodo = (getTodoItem) =>
 
 // }
 
-// export const updateTodos = (id) =>
-// (dispatch,getState) =>{
-//     console.log(id+'sdfsdf')
-// }
+export const updateTodos = (id) =>
+    (dispatch, getState) => {
+        console.log(id + 'sdfsdf')
+    }
 
 

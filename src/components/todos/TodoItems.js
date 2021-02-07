@@ -1,64 +1,88 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector,useDispatch} from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit,faSave } from '@fortawesome/free-solid-svg-icons'
 import { TodoList, todoComplete, updateTodos } from '../../redux/action'
 const TodoItems = () => {
     const dispatch = useDispatch()
     const [editable, setEditable] = useState(false)
-    const [todos, setTodos] = useState()
+    const [todos, setTodos] = useState(null)
+    const [selectedTodo, setSelected] = useState(null)
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(TodoList())
-    },[])
+    }, [dispatch])
 
-    const setItemComplete =(id)=>{
-        dispatch(todoComplete(id))
+    const setItemComplete = (item) => {
+        const updatedItem = {
+            ...item,
+            Status: "Completed"
+        }
+        dispatch(todoComplete(updatedItem))
+        setEditable(false)
+        setTodos(null)
+        setSelected(null)
     }
 
-    const editTodoItem = (id,title) =>{
-        setEditable(!editable)
+    const editTodoItem = (id, title) => {
+        setEditable(true)
         setTodos(title)
+        setSelected(id)
         // dispatch(editItem(uicompleteId))
-    } 
-
-    const updateTodos = (id) => {
-        console.log(id)
     }
 
-    const todoItems = useSelector(state=>state.todoReducer.todoData)
+    const handleUpdateTodo = (uncompleted) => {
+        const updatedList = {
+            "Status": uncompleted.Status,
+            "rowID": selectedTodo,
+            "Title": todos,
+        }
+        dispatch(todoComplete(updatedList))
+        setEditable(false)
+        setTodos(null)
+        setSelected(null)
+
+    }
+
+    const todoItems = useSelector(state => state.todoReducer.todoData)
     console.log(todoItems)
     // const itemToBeEdit = useSelector(state => state.todoEditReducer.editData)
-    // console.log(itemToBeEdit)
     return (
         <div className="row">
+            <div className="todoCompleteWrap">
             {
-                todoItems != undefined ?                
-                todoItems.filter(uncompleted =>uncompleted.status !== false)
-                .map(uncompletedItem =>{
-                    return(
-                        <div className="col-md-12" key={uncompletedItem.id}>
-                            <div className="todo-items d-flex align-items-center pt-3 pb-3 border-bottom">
-                                <input type="checkbox" className="itemCheck mr-3" onClick={() => setItemComplete(uncompletedItem.id)}></input>
-                                <div>
-                                    {
-                                        editable ? <input type="text"
-                                        className="form-control"
-                                        name="todoItem"
-                                        value={todos}
-                                        onChange={(e)=>setTodos(e.target.value)}></input> :
-                                        <p>{uncompletedItem.title}</p>
-                                    }
-                                    
-                                    {/* <p>{uncompletedItem.title}</p> */}
+                todoItems != undefined ?
+                
+                    todoItems.filter(uncompleted => uncompleted.Status === "Pending")
+                        .map(uncompletedItem => {
+                            return (
+                                
+                                <div className="col-md-12" key={uncompletedItem.rowID}>
+                                    <div className={ selectedTodo === uncompletedItem.rowID && editable ? 'todo-items d-flex align-items-center border-bottom pl-4' : 'todo-items d-flex align-items-center border-bottom'}>
+                                        {selectedTodo === uncompletedItem.rowID && editable ? null : <input type="checkbox" className="itemCheck mr-3" onClick={() => setItemComplete(uncompletedItem)}></input>}
+                                        <div>
+                                            {
+                                                selectedTodo === uncompletedItem.rowID && editable ? <input type="text"
+                                                    className="form-control"
+                                                    name="todoItem"
+                                                    value={todos}
+                                                    onChange={(e) => setTodos(e.target.value)}></input> :
+                                                    <p>{uncompletedItem.Title}</p>
+                                            }
+                                        </div>
+                                            <div className="ml-auto pr-4">
+                                            {selectedTodo === uncompletedItem.rowID && editable ? <FontAwesomeIcon className="todoIcon" icon={faSave} onClick={selectedTodo === uncompletedItem.rowID && editable
+                                            ? () => handleUpdateTodo(uncompletedItem) : null } /> : <FontAwesomeIcon className="todoIcon" icon={faEdit} onClick={selectedTodo === uncompletedItem.rowID && editable
+                                            ? null : () => editTodoItem(uncompletedItem.rowID, uncompletedItem.Title)} />}
+                                        </div>
+                                    </div>
                                 </div>
-                                <button onClick={editable ? ()=>dispatch(updateTodos(uncompletedItem.id)) : () => editTodoItem(uncompletedItem.id,uncompletedItem.title) }>{ editable ? 'Update' : 'edit' }</button>
-                            </div>
-                        </div>
-                    )
-                })
-                 : <p>No Item</p>
+                            )
+                        })
+                    : <p>No Item</p>
             }
-            
             </div>
+        </div>
 
     );
 };

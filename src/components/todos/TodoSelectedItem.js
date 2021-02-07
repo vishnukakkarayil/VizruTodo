@@ -1,39 +1,49 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector,useDispatch} from 'react-redux'
-import { TodoList } from '../../redux/action'
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { TodoList, todoComplete } from '../../redux/action'
 
 const TodoSelectedItem = () => {
     const dispatch = useDispatch()
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(TodoList())
-    },[])
+    }, [])
 
-    const todoItems = useSelector(state=>state.todoReducer.todoData)
+    const handleCheckedItem = (item) => {
+        const updatedItem = {
+            ...item,
+            Status: "Pending"
+        }
+        dispatch(todoComplete(updatedItem))
+    }
+
+    const todoItems = useSelector(state => state.todoReducer.todoData)
 
 
     return (
         <div className="row">
-        {
-            todoItems != undefined ?
-            todoItems.filter(completed =>completed.status === false)
-            .map(completedItem =>{
-                return(
-                
-                    <div className="col-md-12" key={completedItem.id}>
-                        <div className="todo-items d-flex align-items-center pt-3 pb-3 border-bottom">
-                            <input type="checkbox" className="itemCheck mr-3" checked></input>
-                            <div>
-                                    <p className="selected-item">{completedItem.title}</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-                
-                )
-            }) :
-            <p>No Completed Items</p>
-        }
+            <div className="todoCompleteWrap">
+            {
+                todoItems != undefined ?
+                    todoItems.filter(completed => completed.Status === "Completed")
+                        .map(completedItem => {
+                            return (
+
+                                <div className="col-md-12" key={completedItem.rowID}>
+                                    <div className="todo-items d-flex align-items-center pt-3 pb-3 border-bottom">
+                                        <input type="checkbox" className="itemCheck mr-3" checked onChange={() => handleCheckedItem(completedItem)}></input>
+                                        <div>
+                                            <p className="selected-item">{completedItem.Title}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            )
+                        }) :
+                    <p>No Completed Items</p>
+            }
         </div>
+    </div>
     );
 };
 

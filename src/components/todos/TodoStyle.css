@@ -1,4 +1,9 @@
-.todo-items{
+.todoCompleteWrap {
+    width: 100%;
+    max-height: 255px;
+    overflow: overlay;
+}
+s.todo-items{
     background: #fff;
 }
 .todo-items:hover{
@@ -6,4 +11,24 @@
 }
 .selected-item {
     text-decoration: line-through;
+}
+.todo-items {
+    height: 60px;
+}
+.todoIcon {
+    color: #c7c7c7;
+    cursor: pointer;
+}
+.todoAdd, .todoAddIcon {
+    color: rgb(211, 74, 68);
+}
+button.addItemBtn {
+    background: #d34a44;
+    color: #fff;
+    border: navajowhite;
+    padding: 5px 23px;
+    border-radius: 4px;
+}
+.selected-item {
+    color: #9c9797;
 }

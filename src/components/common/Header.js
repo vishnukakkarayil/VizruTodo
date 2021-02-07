@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar } from 'react-bootstrap'
+import logo from '../../assets/images/Logo.png'
 
 const Header = () => {
     return (
@@ -7,7 +8,7 @@ const Header = () => {
         <Navbar.Brand href="#home" style={{color:'#fff'}}>
           <img
             alt=""
-            src="/logo.svg"
+            src={logo}
             width="30"
             height="30"
             className="d-inline-block align-top"
