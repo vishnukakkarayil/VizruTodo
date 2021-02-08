@@ -1,10 +1,9 @@
-// import axios from 'axios'
+import axios from 'axios'
 import { v4 as uuid } from 'uuid'
 export const TodoList = () =>
     (dispatch, getState) => {
         const data = new FormData()
         data.append('Type', 'Getlist')
-        dispatch({ type: 'TODO_DATAS' })
 
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;

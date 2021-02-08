@@ -32,3 +32,53 @@ button.addItemBtn {
 .selected-item {
     color: #9c9797;
 }
+
+
+
+.round, .round-checkbox {
+    position: relative;
+  }
+  
+  .round label, .round-checkbox label {
+    border-radius: 50%;
+    cursor: pointer;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 20px;
+  }
+
+  .round label {
+    border: 1px solid #ccc;
+  }
+  .round-checkbox label {
+    border: 2px solid#d34a44;
+  }
+  
+  .round label:after, .round-checkbox label:after {
+    border: 2px solid #9e9e9e;
+    border-top: none;
+    border-right: none;
+    content: "";
+    height: 6px;
+    left: 3px;
+    opacity: 0;
+    position: absolute;
+    top: 5px;
+    transform: rotate(-45deg);
+    width: 12px;
+  }
+  
+  .round input[type="checkbox"], .round-checkbox input[type="checkbox"] {
+    visibility: hidden;
+  }
+  
+  .round input[type="checkbox"]:checked + label {
+    /* background-color: #66bb6a; */
+    border-color: #9e9e9e;
+  }
+  
+  .round input[type="checkbox"]:checked + label:after {
+    opacity: 1;
+  }

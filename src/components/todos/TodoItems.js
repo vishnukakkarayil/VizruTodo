@@ -28,7 +28,6 @@ const TodoItems = () => {
         setEditable(true)
         setTodos(title)
         setSelected(id)
-        // dispatch(editItem(uicompleteId))
     }
 
     const handleUpdateTodo = (uncompleted) => {
@@ -44,22 +43,30 @@ const TodoItems = () => {
 
     }
 
-    const todoItems = useSelector(state => state.todoReducer.todoData)
-    console.log(todoItems)
-    // const itemToBeEdit = useSelector(state => state.todoEditReducer.editData)
+    const todoDatas = useSelector(state => state.todoReducer.todoData)
+    
     return (
         <div className="row">
             <div className="todoCompleteWrap">
             {
-                todoItems != undefined ?
                 
-                    todoItems.filter(uncompleted => uncompleted.Status === "Pending")
+                todoDatas.length > 0 ?
+                
+                todoDatas.filter(uncompleted => uncompleted.Status === "Pending")
                         .map(uncompletedItem => {
                             return (
-                                
+                                <>{
+                                uncompletedItem ?
                                 <div className="col-md-12" key={uncompletedItem.rowID}>
+                                    {console.log(uncompletedItem)}
                                     <div className={ selectedTodo === uncompletedItem.rowID && editable ? 'todo-items d-flex align-items-center border-bottom pl-4' : 'todo-items d-flex align-items-center border-bottom'}>
-                                        {selectedTodo === uncompletedItem.rowID && editable ? null : <input type="checkbox" className="itemCheck mr-3" onClick={() => setItemComplete(uncompletedItem)}></input>}
+                                        {selectedTodo === uncompletedItem.rowID && editable ? null : 
+                                        // <input type="checkbox" className="itemCheck mr-3" onClick={() => setItemComplete(uncompletedItem)}></input>}
+                                         <div class="round-checkbox">
+                                             <input type="checkbox" id="roundedCheckbox" className="itemCheck mr-3" />
+                                             <label for="roundedCheckbox" onClick={() => setItemComplete(uncompletedItem)}></label>
+                                         </div> }
+                                        
                                         <div>
                                             {
                                                 selectedTodo === uncompletedItem.rowID && editable ? <input type="text"
@@ -77,6 +84,10 @@ const TodoItems = () => {
                                         </div>
                                     </div>
                                 </div>
+                                : <p>No Item</p>
+                                            }
+                                </>
+                                            
                             )
                         })
                     : <p>No Item</p>
