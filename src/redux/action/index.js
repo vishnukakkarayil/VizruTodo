@@ -32,7 +32,6 @@ export const todoComplete = (completedItem) =>
         Object.keys(updateData).forEach(key => {
             newFormData.append(key, updateData[key])
         })
-        console.log(Object.keys(updateData))
         const allTodoItems = getState().todoReducer.todoData
 
         axios.post('https://quality.vizru.com/workflow.trigger/6012a83e56e22e19105ea8fc', newFormData)
