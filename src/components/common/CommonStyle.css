@@ -1,3 +1,35 @@
 p{
     margin-bottom: 0;
 }
+
+::placeholder {
+    color: #fff;
+    font-weight: 100;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.has-search .search-box {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 1.375rem;
+    line-height: 1.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #fff;
+}
+.has-search {
+    margin-left: auto;
+}
+.search-box {
+    background: transparent;
+    border: none;
+}
