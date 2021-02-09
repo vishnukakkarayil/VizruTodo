@@ -11,6 +11,10 @@ p{
     display: none;
 }
 
+input.search-box:focus {
+    outline: none;
+}
+
 .has-search .search-box {
     padding-left: 2.375rem;
 }
@@ -32,4 +36,5 @@ p{
 .search-box {
     background: transparent;
     border: none;
+    color: #fff;
 }

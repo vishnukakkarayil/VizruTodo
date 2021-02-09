@@ -24,13 +24,15 @@ export const todoComplete = (completedItem) =>
     (dispatch, getState) => {
         const updateData = {
             ...completedItem,
-            "Type": "Insert"
+            "Type": "Update"
         }
+        
         const newFormData = new FormData()
 
         Object.keys(updateData).forEach(key => {
             newFormData.append(key, updateData[key])
         })
+        console.log(Object.keys(updateData))
         const allTodoItems = getState().todoReducer.todoData
 
         axios.post('https://quality.vizru.com/workflow.trigger/6012a83e56e22e19105ea8fc', newFormData)
@@ -40,7 +42,7 @@ export const todoComplete = (completedItem) =>
                     const currentIndex = allTodoItems.findIndex(allTodoItem => allTodoItem.rowID === completedItem.rowID)
                     allTodoItems.splice(currentIndex, 1, completedItem)
                     const updatedItems = [...allTodoItems]
-
+                    console.log(updatedItems)
                     dispatch({ type: 'ADD_TO_TODO', payload: updatedItems })
                 }
             }).catch(err => {
@@ -78,9 +80,8 @@ export const addItemToTodo = (getTodoItem) =>
     }
 
 export const searchItems = (itemToSearch) =>
-(dispatch,getState)=>{
-    const allTodoItems = getState().todoReducer.todoData
-
+(dispatch,getState)=>{   
+    dispatch({ type: 'SEARCH_FOR_TODO', payload: itemToSearch })
 }
 
 

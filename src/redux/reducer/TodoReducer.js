@@ -5,7 +5,6 @@ const initialState = {
 const TodoReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'TODO_DATAS':
-          // console.log(action.payload)
           const usingObjectAssign = JSON.parse(action.payload);
             return{
                 ...state,
@@ -13,7 +12,6 @@ const TodoReducer = (state = initialState, action) => {
             }   
                 
         case 'COMPLETE_TODO':
-            // console.log(action.payload)
             return{
                 ...state,
                 todoData:action.payload

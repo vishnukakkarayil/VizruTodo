@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons'
 import { TodoList, todoComplete, updateTodos } from '../../redux/action'
-const TodoItems = () => {
+const TodoItems = ( props ) => {
     const dispatch = useDispatch()
     const [editable, setEditable] = useState(false)
     const [todos, setTodos] = useState(null)
@@ -32,9 +32,11 @@ const TodoItems = () => {
 
     const handleUpdateTodo = (uncompleted) => {
         const updatedList = {
+            ...uncompleted,
             "Status": uncompleted.Status,
-            "rowID": selectedTodo,
             "Title": todos,
+            "rowID": selectedTodo,
+            
         }
         dispatch(todoComplete(updatedList))
         setEditable(false)
@@ -42,16 +44,18 @@ const TodoItems = () => {
         setSelected(null)
 
     }
-
+    let itemsPending = []
     const todoDatas = useSelector(state => state.todoReducer.todoData)
-    const itemsPending = todoDatas.filter(uncompleted => uncompleted.Status === "Pending")
+    const searchData = useSelector(state => state.searchTodoReducer.searchItem)
+    searchData.length > 0 || props.searchedItem.length > 0 ?
+    itemsPending = searchData.filter(uncompleted => uncompleted.Status === "Pending")
+    :itemsPending = todoDatas.filter(uncompleted => uncompleted.Status === "Pending")
+    
     return (
         <div className="row">
             <div className="todoCompleteWrap">
                 {
-
                     itemsPending.length > 0 ?
-
                     itemsPending.map(uncompletedItem => {
                                 return (
                                     <>{
