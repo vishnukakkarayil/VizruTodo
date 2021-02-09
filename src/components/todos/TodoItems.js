@@ -8,11 +8,16 @@ const TodoItems = ( props ) => {
     const [editable, setEditable] = useState(false)
     const [todos, setTodos] = useState(null)
     const [selectedTodo, setSelected] = useState(null)
+    const [error,setError] = useState(true)
 
     useEffect(() => {
         dispatch(TodoList())
     }, [dispatch])
 
+    const setEditTodo = (e) => {
+        setTodos(e.target.value)
+        todos.length > 0 ? setError(true) : setError(false)
+    }
     const setItemComplete = (item) => {
         const updatedItem = {
             ...item,
@@ -38,11 +43,14 @@ const TodoItems = ( props ) => {
             "rowID": selectedTodo,
             
         }
+        if(todos.length > 0){
         dispatch(todoComplete(updatedList))
         setEditable(false)
         setTodos(null)
         setSelected(null)
-
+        }else{
+            setError(false)
+        }
     }
     let itemsPending = []
     const todoDatas = useSelector(state => state.todoReducer.todoData)
@@ -66,16 +74,19 @@ const TodoItems = ( props ) => {
                                                         // <input type="checkbox" className="itemCheck mr-3" onClick={() => setItemComplete(uncompletedItem)}></input>}
                                                         <div class="round-checkbox">
                                                             <input type="checkbox" id="roundedCheckbox" className="itemCheck mr-3" />
+                                                            
                                                             <label for="roundedCheckbox" onClick={() => setItemComplete(uncompletedItem)}></label>
                                                         </div>}
 
                                                     <div>
                                                         {
-                                                            selectedTodo === uncompletedItem.rowID && editable ? <input type="text"
+                                                            selectedTodo === uncompletedItem.rowID && editable ?<div> <input type="text"
                                                                 className="form-control"
                                                                 name="todoItem"
                                                                 value={todos}
-                                                                onChange={(e) => setTodos(e.target.value)}></input> :
+                                                                onChange={(e) => setEditTodo(e)}></input> 
+                                                                <p className={error ? 'd-none' : 'd-block' } style={{color:'red'}} >Required</p>
+                                                                </div>:
                                                                 <p>{uncompletedItem.Title}</p>
                                                         }
                                                     </div>

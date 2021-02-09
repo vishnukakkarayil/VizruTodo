@@ -42,7 +42,6 @@ export const todoComplete = (completedItem) =>
                     const currentIndex = allTodoItems.findIndex(allTodoItem => allTodoItem.rowID === completedItem.rowID)
                     allTodoItems.splice(currentIndex, 1, completedItem)
                     const updatedItems = [...allTodoItems]
-                    console.log(updatedItems)
                     dispatch({ type: 'ADD_TO_TODO', payload: updatedItems })
                 }
             }).catch(err => {
